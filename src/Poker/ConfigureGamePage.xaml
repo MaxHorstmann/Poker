@@ -1,0 +1,87 @@
+﻿<common:LayoutAwarePage
+    x:Name="pageRoot"
+    x:Class="Poker.ConfigureGamePage"
+    DataContext="{Binding DefaultViewModel, RelativeSource={RelativeSource Self}}"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Poker"
+    xmlns:common="using:Poker.Common"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Style="{StaticResource LayoutRootStyle}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+
+        <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
+        <TextBlock x:Name="pageTitle" Grid.Column="1" Grid.ColumnSpan="2"  Text="Let's start a new game..." Style="{StaticResource PageHeaderTextStyle}"/>
+
+        <TextBlock Name="textBlockNameLabel" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Your name:" Style="{StaticResource PageHeaderTextStyle}" VerticalAlignment="Center" Margin="0" />
+        <TextBox Name="textBoxName" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Text="Poker Player With A long Name" FontSize="25" GotFocus="textBoxName_GotFocus" />
+
+        <TextBlock Name="textBlockChipcountLabel" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Center" Text="Chipcount:" Style="{StaticResource PageHeaderTextStyle}" Margin="0" />
+        <TextBlock Name="textBlockChipcount" Grid.Column="2" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Center" Text="10000" Style="{StaticResource PageHeaderTextStyle}" Margin="0"/>
+        <Button Name="buttonResetChipcount" Content="Reset" Grid.Row="2" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Left"  />
+
+        <TextBlock Name="textBlockGameLabel" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Text="Game:" Style="{StaticResource PageHeaderTextStyle}" Margin="0" />
+        <ComboBox Name="comboBoxGameType" Grid.Column="2" Margin="48,23,0,0" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Left">
+            <ComboBoxItem Tag="NLHE" IsSelected="True">No Limit Texas Hold'em</ComboBoxItem>
+            <ComboBoxItem Tag="LHE">Limit Texas Hold'em</ComboBoxItem>
+        </ComboBox>
+
+        <TextBlock Name="textBlockBlindsLabel" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Text="Blinds:" Style="{StaticResource PageHeaderTextStyle}" Margin="0" />
+        <Slider Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" MinWidth="300"/>
+
+        <Button Name="buttonStartGame" Content="Start Game!" Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" MinWidth="500" Click="Button_Start_Game_Click" />
+
+        <VisualStateManager.VisualStateGroups>
+
+            <!-- Visual states reflect the application's view state -->
+            <VisualStateGroup x:Name="ApplicationViewStates">
+                <VisualState x:Name="FullScreenLandscape"/>
+                <VisualState x:Name="Filled"/>
+
+                <!-- The entire page respects the narrower 100-pixel margin convention for portrait -->
+                <VisualState x:Name="FullScreenPortrait">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="backButton" Storyboard.TargetProperty="Style">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PortraitBackButtonStyle}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+
+                <!-- The back button and title have different styles when snapped -->
+                <VisualState x:Name="Snapped">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="backButton" Storyboard.TargetProperty="Style">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnappedBackButtonStyle}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetName="pageTitle" Storyboard.TargetProperty="Style">
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource SnappedPageHeaderTextStyle}"/>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+    </Grid>
+</common:LayoutAwarePage>
